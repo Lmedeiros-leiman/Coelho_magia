@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Coelho Mágico</title>
+
+    <style>
+        *{
+            transition: 5s ease-in-out all;
+        }
+        body{
+            max-width: 100vw;
+            max-height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-content: center;
+            justify-content: center;
+        }
+        .foradecena {
+            top: -50% !important;
+        }
+        .moverparaopano{
+            top: 50% !important; right: 20% !important;
+            transform: translate(50%,-50%) !important;
+        }
+        .moverparaocoelho{
+            top: 50%; right: 70% !important;
+            transform: translate(50%,-50%) !important;
+        }
+        .moverparaocoelholado{
+            top: 50%; right: 50% !important;
+            transform: translate(50%,-50%) !important;
+        }
+        .moverparaavarinha{
+            top: 50%; right: -10% !important;
+            transform: translate(50%,-50%) !important;
+        }
+        .moverpanoa{
+            top: 50%; right: 62% !important;
+            transform: translate(50%,-50%) !important;
+        }
+
+        #botao{
+            position: absolute;
+            top: 50%; right: 50%;
+            transform: translate(50%,-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-family: "Comic Sans MS";
+            font-size: larger;
+            border: 2px gray;
+            padding: 4vw;
+            z-index: 99;
+            cursor: pointer;
+            transition: top 5s ease-in-out;
+        }
+
+        #botao:hover{
+            background: black;
+        }
+        #botao:focus{
+            background: black;
+        }
+        #coelho{
+            position: absolute;
+            position: absolute;
+            top: 50%; left: 10%;
+            transform: translate(50%,-50%);
+            width: 20vw;
+            height: 20vw;
+            background-image: url("coelho.png");
+            background-repeat: no-repeat;
+            background-size: 100%;
+            background-position: center;
+            z-index: 2;
+        }
+        #pano{
+            position: absolute;
+            top: 50%; right: 20%;
+            transform: translate(50%,-50%);
+            width: 20vw;
+            height: 20vw;
+            z-index: 3;
+        }
+        #mao{
+            position: absolute;
+            top: 50%; right: 50%;
+            transform: translate(50%,-50%);
+            width: 5vw;
+            height: 5vw;
+            z-index: 8;
+        }
+        #varinha{
+            position: absolute;
+            top: 50%; right: -10%;
+            transform: translate(50%,-50%);
+            width: 20vw;
+            height: 20vw;
+            z-index: 4;
+        }
+picture{
+    width: 50px;
+    height: 50px;
+}
+img{
+    width: inherit;
+    height: inherit;
+    border: 0;
+}
+
+
+
+
+</style>
+</head>
+
+<body>
+<button id="botao" onclick="comecar()">Começar Show</button>
+<picture id="coelho"></picture>
+<picture id="pano"><img src="pano.jpg"></picture>
+<picture id="mao"><img src="mao_aberta.png"></picture>
+<picture id="varinha"><img src="varinha.png"></picture>
+
+
+<footer>
+
+</footer>
+</body>
+<script>
+    let botao = document.getElementById("botao");
+    let coelho = document.getElementById("coelho");
+    let pano = document.getElementById("pano");
+    let varinha = document.getElementById("varinha");
+    let mao = document.getElementById("mao");
+    let estagiosmao = ["mao_aberta.png", "mao_pegando.png"];
+    let pegando = 0;
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function comecar() {
+        moverbotaoinicio()
+        await sleep(2000);
+        movermao();
+        await sleep(5000);
+        fecharmao();
+        await sleep(500);
+        moverpanoemao();
+        await sleep(5000);
+        abrirmao();
+        escondercoelho();
+        await sleep(500)
+        moverparavarinha();
+        await sleep(5000);
+        movervarinhaemao();
+        await sleep(5000);
+
+        // Sacudir varinha
+        // moverpanoa | moveparacoelho
+
+        varinha.classList.remove("moverparacoelholado");
+        mao.classList.remove("moverparaocoelholado");
+        varinha.classList.add("moverpanoa");
+        mao.classList.add("moverpanoa");
+        await sleep(5000);
+        varinha.classList.add("moverparacoelholado");
+        mao.classList.add("moverparaocoelholado");
+        varinha.classList.remove("moverpanoa");
+        mao.classList.remove("moverpanoa");
+        await sleep(5000);
+        varinha.classList.remove("moverparacoelholado");
+        mao.classList.remove("moverparaocoelholado");
+        varinha.classList.add("moverpanoa");
+        mao.classList.add("moverpanoa");
+        await sleep(5000);
+        varinha.classList.remove("moverpanoa");
+        varinha.classList.remove("moverparaocoelholado");
+        mao.classList.remove("moverpanoa");
+        mao.classList.add("moverparaavarinha");
+        await sleep(5000);
+
+        console.log("Abrindo mão");
+        abrirmao();
+        mao.classList.add("moverparaocoelho");
+        mao.classList.remove("moverparaavarinha")
+        await sleep(5000);
+        fecharmao();
+        await sleep(500);
+        mao.classList.add("moverparaopano");
+        mao.classList.remove("moverparaocoelho");
+        pano.classList.remove("moverparaocoelho");
+        await sleep(5000);
+        abrirmao();
+        await sleep(500);
+        mao.classList.remove("moverparaopano");
+
+    }
+
+    function moverbotaoinicio(){
+        botao.classList.toggle("foradecena")
+    }
+    function movermao(){
+        mao.classList.add("moverparaopano")
+    }
+    function fecharmao(){
+        mao.children[0].src = "mao_pegando.png";
+    }
+    function abrirmao(){
+        mao.children[0].src = "mao_aberta.png";
+    }
+    function escondercoelho(){
+        coelho.style.backgroundImage = "url('')";
+    }
+    function mostrarcoelho(){
+        coelho.style.backgroundImage = "url('coelho.png')";
+    }
+    function moverpanoemao(){
+        mao.classList.remove("moverparaopano");
+        pano.classList.add("moverparaocoelho");
+        mao.classList.add("moverparaocoelho");
+
+    }
+    function moverparavarinha(){
+        mao.classList.remove("moverparaocoelho")
+        mao.classList.add("moverparaavarinha");
+    }
+    function movervarinhaemao() {
+        fecharmao();
+        mao.classList.remove("moverparaavarinha");
+
+        varinha.classList.add("moverparaocoelholado");
+        mao.classList.add("moverparaocoelholado");
+    }
+
+
+
+</script>
+</html>
